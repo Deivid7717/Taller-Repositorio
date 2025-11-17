@@ -135,7 +135,13 @@ body{
     .layout{grid-template-columns:1fr;gap:12px}
     .main-nav ul{flex-wrap:wrap}
     .header-inner{flex-direction:column;align-items:flex-start;gap:8px}
-    .logo img{height:56px}
+    .logo img{
+        /* tamaño reducido del logo (primera imagen) */
+        height:40px !important;
+        width:auto;
+        object-fit:contain;
+        display:block;
+    }
     .search-form{width:100%;justify-content:space-between}
     .filters{flex-direction:column;align-items:flex-start;gap:8px}
     .car-card img{
@@ -301,15 +307,359 @@ footer {
     .clientes-header { flex-direction: column; align-items: flex-start; gap: 6px; }
     .cta { justify-content: stretch; flex-direction: column; }
     .btn { width: 100%; text-align: center; }
-}/* ...existing code... */
-.logo img, .logo-img {
-    max-width: 140px;
-    height: auto;
-    display: block;
 }
+
+/* MODAL CUSTOMIZER */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #111;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-close:hover {
+    color: #111;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.customizer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.customizer-section {
+    background: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.customizer-section h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: #111;
+}
+
+.color-options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.color-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.color-box:hover {
+    transform: scale(1.1);
+}
+
+.color-box.selected {
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.customizer-section select,
+.customizer-section input[type="checkbox"] {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.customizer-section input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.customizer-section label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: #333;
+}
+
+.customizer-section p {
+    margin: 8px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.total-price {
+    background: var(--accent);
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 18px !important;
+    margin-top: 12px !important;
+    text-align: center;
+}
+
 @media (max-width: 720px) {
-    .logo img, .logo-img {
-        max-width: 90px;
-        height: auto;
+    .customizer-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+        max-width: 95vw;
     }
 }
+
+.logo img{
+    /* tamaño reducido del logo (primera imagen) */
+    height:40px !important;
+    width:auto;
+    object-fit:contain;
+    display:block;
+}
+
+/* -------------------------
+   Mejora visual general
+   ------------------------- */
+:root{
+    --soft-bg: linear-gradient(180deg,#f7fbff,#f3f8fc);
+    --glass: rgba(255,255,255,0.65);
+    --shadow-soft: 0 10px 30px rgba(18,38,63,0.06);
+    --shadow-strong: 0 18px 46px rgba(18,38,63,0.10);
+}
+
+/* fondo de la página más suave */
+body{
+    background: var(--soft-bg);
+}
+
+/* envolver todo en tarjeta con padding elegante */
+.site-wrapper{
+    background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(250,252,255,0.9));
+    border-radius:16px;
+    padding:20px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+
+/* encabezado más limpio y centrado */
+.site-header{
+    padding:14px 18px;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:stretch;
+    background: linear-gradient(90deg, rgba(255,255,255,0.99), rgba(248,252,255,0.96));
+    border: 1px solid rgba(15,40,70,0.03);
+}
+
+/* logo - mayor presencia */
+.header-inner{align-items:center; gap:18px;}
+.logo img{ height:48px; width:auto; transition:transform .18s ease; border-radius:6px; }
+.logo img:hover{ transform:scale(1.02); }
+
+/* buscador más integrado */
+.search-form{
+    background: rgba(255,255,255,0.8);
+    padding:8px;
+    border-radius:10px;
+    border:1px solid rgba(14,58,120,0.03);
+    box-shadow: 0 6px 18px rgba(20,40,80,0.03);
+}
+.search-form input{ min-width:260px; border:0; background:transparent; outline:none; font-size:0.95rem; color: #1b2430; }
+.search-form button{ border-radius:8px; box-shadow:none; }
+
+/* CTA principales */
+.top-cta .btn-primary, .btn-cta{
+    padding:10px 16px;
+    border-radius:999px;
+    box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.top-cta .btn-primary:hover, .btn-cta:hover{ transform:translateY(-3px); box-shadow: var(--shadow-strong); }
+
+/* navegación tipo "píldora" */
+.main-nav{ display:flex; justify-content:center; align-items:center; padding:8px 12px;}
+.main-nav ul{ justify-content:center; }
+.main-nav a{
+    background: rgba(59,130,246,0.06);
+    color: var(--accent);
+    padding:8px 14px;
+    border-radius:999px;
+    transition: background .12s ease, transform .12s ease;
+}
+.main-nav a:hover{ background: linear-gradient(90deg, rgba(59,130,246,0.10), rgba(96,165,250,0.06)); transform:translateY(-2px); }
+
+/* layout: márgenes y separación mejorada */
+.layout{ gap:22px; grid-template-columns:220px 1fr 300px; }
+
+/* tarjetas y tarjetas de coches mejoradas */
+.car-card{
+    border-radius:12px;
+    overflow:hidden;
+    transition: transform .16s ease, box-shadow .16s ease;
+    border: 1px solid rgba(15,40,70,0.04);
+}
+.car-card:hover{
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-strong);
+}
+.car-card img{ height:160px; object-fit:cover; display:block; border-bottom:1px solid rgba(15,40,70,0.03); }
+
+/* cuerpo de la tarjeta: más aire */
+.card-body{ padding:16px; gap:10px; }
+.card-body h3{ font-size:1.08rem; color:#0f1724; margin-bottom:4px; }
+.specs{ color:#6b7280; font-size:0.92rem; }
+.price{ margin-top:auto; color:var(--accent-2); font-weight:800; font-size:0.98rem; }
+
+/* botones secundarios (detalles) */
+.btn-sm{
+    background: linear-gradient(90deg,#ff7a59,#ff9b7a);
+    box-shadow: 0 8px 18px rgba(255,122,89,0.12);
+    border-radius:8px;
+    padding:8px 12px;
+    color:#fff;
+    transition: transform .12s ease;
+}
+.btn-sm:hover{ transform:translateY(-3px); }
+
+/* widgets derecho: tarjeta más ligera */
+.sidebar-right{ padding:18px; border-radius:12px; background:linear-gradient(180deg,#fff,#fbfdff); border:1px solid rgba(15,40,70,0.03); box-shadow: var(--shadow-soft); }
+.widget{ padding:10px 0; }
+
+/* formulario más amigable */
+.contact-form input, .contact-form textarea{
+    background: #fff;
+    border:1px solid rgba(15,40,70,0.04);
+    padding:10px;
+    border-radius:8px;
+    transition: box-shadow .12s;
+}
+.contact-form input:focus, .contact-form textarea:focus{ box-shadow: 0 6px 18px rgba(14,58,120,0.06); outline:none; }
+
+/* modal customizer: aspecto elevado */
+.modal-content{
+    border-radius:14px;
+    padding:8px;
+    border: 1px solid rgba(15,40,70,0.04);
+}
+.modal-header{ padding:18px 20px; }
+.modal-body{ padding:18px 20px; }
+
+/* secciones personalizadas: tarjetas internas */
+.customizer-section{ background: linear-gradient(180deg,#ffffff,#fbfdff); border:1px solid rgba(15,40,70,0.03); }
+
+/* precios y resumen */
+.total-price{ font-size:1.12rem; padding:14px; }
+
+/* footer limpio */
+.site-footer{ margin-top:22px; padding:16px; background:transparent; color:#5b6b78; }
+
+/* responsivo refinado */
+@media (max-width:1024px){
+    .layout{ grid-template-columns: 180px 1fr; }
+    .site-wrapper{ padding:16px; }
+}
+@media (max-width:720px){
+    .logo img{ height:44px; }
+    .search-form input{ min-width:120px; }
+    .layout{ grid-template-columns:1fr; }
+    .top-cta .btn-primary{ width:100%; }
+    .car-card img{ height:140px; }
+}
+
+/* pequeños detalles extra */
+a { text-decoration:none; }
+h1,h2,h3,h4{ letter-spacing: -0.2px; }
+/* ======= estilos para stuff.html (Fun stuff) ======= */
+.fun-hero{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px;
+  border-radius:12px;
+  background:linear-gradient(90deg,#fff9f3,#f7fbff);
+  margin-bottom:18px;
+  box-shadow:0 8px 28px rgba(12,40,80,0.04);
+}
+.grid-fun{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-bottom:12px;
+}
+.card-fun{
+  background:linear-gradient(180deg,#ffffff,#fbfdff);
+  padding:14px;
+  border-radius:10px;
+  box-shadow:0 8px 22px rgba(20,20,30,0.04);
+}
+.small-muted{ color:var(--muted); font-size:0.95rem; }
+.btn-ghost{
+  background:transparent;
+  border:1px solid rgba(14,58,120,0.06);
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--accent);
+}
+.btn-ghost:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(14,58,120,0.04); }
+
+/* adaptaciones responsivas */
+@media (max-width:820px){
+  .fun-hero{ flex-direction:column; align-items:stretch; text-align:left; }
+  .fun-hero img{ display:block; margin:6px 0 0 auto; height:88px }
+}
+@media (max-width:480px){
+  .grid-fun{ grid-template-columns:1fr; }
+}
+/* ======= fin estilos stuff ======= */
