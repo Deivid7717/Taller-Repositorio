@@ -5,6 +5,145 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Ofertas de Leasing - Ejemplo organizado</title>
     <link rel="stylesheet" href="estilos index1/estilos.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0d0d0;
+        }
+    </style>
 </head>
 <body>
     <div class="site-wrapper">
@@ -22,7 +161,7 @@
                 </form>
 
                 <div class="top-cta">
-                    <button class="btn-primary">¡Consigue una cotización!</button>
+                    <button class="btn-primary" onclick="openQuoteModal()">¡Consigue una cotización!</button>
                 </div>
 
                 
@@ -43,13 +182,28 @@
             </nav>
         </header>
 
-        <div class="layout">      
+        <div class="layout">
+            
+            <aside class="sidebar-left" aria-label="Menú lateral">
+                <ul class="vertical-menu">
+                    
+                    
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="index1.html">Cars / Vans</a></li>
+                    <li><a href="customers.html">Customers</a></li>
+                    <li><a href="stuff.html">Fun stuff</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                     <a href="index.html">ver pagina web</a>
+                </ul>
+            </aside>
+
+            
             <main class="content" id="main" tabindex="-1">
                 <section class="hero">
                     <div class="hero-banner">
                         <h1>Nuestras mejores ofertas de leasing</h1>
                         <p class="lead">Promociones limitadas. Financiación flexible y entrega rápida.</p>
-                        <a class="btn-cta" href="#">Ver ofertas</a>
+                        <a class="btn-cta" href="#cars-grid" onclick="scrollToOffers()">Ver ofertas</a>
                     </div>
                 </section>
 
@@ -75,10 +229,10 @@
                         </select>
                     </label>
 
-                    <button class="btn-primary">Aplicar</button>
+                    <button class="btn-primary" onclick="applyFilters()">Aplicar</button>
                 </section>
                
-                <section class="cars-grid" aria-label="Ofertas de coches">
+                <section class="cars-grid" id="cars-grid" aria-label="Ofertas de coches">
                    
                     <article class="car-card">
                         <img src="imagenes index1/seat-ibiza-style-colour-magnetic-tech.avif" alt="Seat Ibiza - 1.0 TSI FR" />
@@ -86,7 +240,7 @@
                             <h3>Seat Ibiza</h3>
                             <p class="specs">1.0 TSI Sport (95bhp) | 5dr | Manual</p>
                             <div class="price">Desde <strong>£250/mes</strong></div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Seat Ibiza', '£250/mes')">Detalles</a>
                         </div>
                     </article>
 
@@ -96,7 +250,7 @@
                             <h3>Nissan Townstar Van</h3>
                             <p class="specs">90kW Tekna Van | 45kWh</p>
                             <div class="price">Desde <strong>£275/mes</strong></div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Nissan Townstar Van', '£275/mes')">Detalles</a>
                         </div>
                     </article>
 
@@ -106,7 +260,7 @@
                             <h3>Audi TT Coupe</h3>
                             <p class="specs">2.0 TFSI | Sport</p>
                             <div class="price">Consultar</div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Audi TT Coupe', 'Consultar')">Detalles</a>
                         </div>
                     </article>
 
@@ -117,7 +271,7 @@
                             <h3>Renault Megane</h3>
                             <p class="specs">1.3 TCe | 5dr | 6-speed</p>
                             <div class="price">Desde <strong>£240/mes</strong></div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Renault Megane', '£240/mes')">Detalles</a>
                         </div>
                     </article>
 
@@ -127,7 +281,7 @@
                             <h3>Kia Ceed</h3>
                             <p class="specs">1.0 T-GDi | 5dr</p>
                             <div class="price">Desde <strong>£230/mes</strong></div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Kia Ceed', '£230/mes')">Detalles</a>
                         </div>
                     </article>
 
@@ -137,7 +291,7 @@
                             <h3>Nissan Juke</h3>
                             <p class="specs">1.0 DIG-T | 5dr</p>
                             <div class="price">Desde <strong>£215/mes</strong></div>
-                            <a class="btn-sm" href="#">Detalles</a>
+                            <a class="btn-sm" href="#" onclick="openDetailsModal('Nissan Juke', '£215/mes')">Detalles</a>
                         </div>
                     </article>
 
@@ -150,7 +304,7 @@
                 
                 <div class="widget widget-contact">
                     <h4>Contacta con nosotros</h4>
-                    <form class="contact-form" action="#" method="post">
+                    <form class="contact-form" onsubmit="handleContactForm(event)">
                         <input type="text" name="name" placeholder="Tu nombre" required />
                         <input type="email" name="email" placeholder="Correo electrónico" required />
                         <textarea name="message" placeholder="¿Qué necesitas?" rows="3"></textarea>
@@ -161,7 +315,7 @@
                 <div class="widget widget-cta">
                     <h4>Respuesta en línea</h4>
                     <div class="timer">Clientes en línea: <strong>12</strong></div>
-                    <a class="btn-primary block" href="#">Solicitar ahora</a>
+                    <a class="btn-primary block" href="#" onclick="openRequestModal()">Solicitar ahora</a>
                 </div>
 
                 <div class="widget widget-list">
@@ -183,8 +337,197 @@
             
         </footer>
     </div>
+
+    <!-- Modal para Cotización -->
+    <div id="quoteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Solicitar Cotización</h2>
+                <button class="close-btn" onclick="closeQuoteModal()">×</button>
+            </div>
+            <div class="success-message" id="quoteSuccess">¡Cotización solicitada! Nos pondremos en contacto pronto.</div>
+            <form onsubmit="handleQuoteForm(event)">
+                <div class="form-group">
+                    <label>Nombre completo *</label>
+                    <input type="text" required />
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico *</label>
+                    <input type="email" required />
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" />
+                </div>
+                <div class="form-group">
+                    <label>Presupuesto aproximado *</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option>Hasta £250/mes</option>
+                        <option>£250-£350/mes</option>
+                        <option>Más de £350/mes</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeQuoteModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Enviar Cotización</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Solicitud Rápida -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Solicitud Rápida</h2>
+                <button class="close-btn" onclick="closeRequestModal()">×</button>
+            </div>
+            <div class="success-message" id="requestSuccess">¡Solicitud enviada! Un agente responderá pronto.</div>
+            <form onsubmit="handleRequestForm(event)">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" required />
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico *</label>
+                    <input type="email" required />
+                </div>
+                <div class="form-group">
+                    <label>¿Qué tipo de vehículo te interesa? *</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option>Coche</option>
+                        <option>Furgoneta</option>
+                        <option>Vehículo Eléctrico</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeRequestModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Enviar Solicitud</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Detalles de Auto -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailsTitle">Detalles del Vehículo</h2>
+                <button class="close-btn" onclick="closeDetailsModal()">×</button>
+            </div>
+            <div class="success-message" id="detailsSuccess">¡Interés registrado! Nos contactaremos con más información.</div>
+            <form onsubmit="handleDetailsForm(event)">
+                <div class="form-group">
+                    <label>Vehículo: <strong id="vehicleName"></strong></label>
+                </div>
+                <div class="form-group">
+                    <label>Precio: <strong id="vehiclePrice"></strong></label>
+                </div>
+                <div class="form-group">
+                    <label>Tu nombre *</label>
+                    <input type="text" required />
+                </div>
+                <div class="form-group">
+                    <label>Tu correo *</label>
+                    <input type="email" required />
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" />
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeDetailsModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Solicitar Información</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Funciones para Modal de Cotización
+        function openQuoteModal() {
+            document.getElementById('quoteModal').classList.add('active');
+            document.getElementById('quoteSuccess').classList.remove('show');
+        }
+
+        function closeQuoteModal() {
+            document.getElementById('quoteModal').classList.remove('active');
+        }
+
+        function handleQuoteForm(e) {
+            e.preventDefault();
+            document.getElementById('quoteSuccess').classList.add('show');
+            setTimeout(() => {
+                closeQuoteModal();
+            }, 2000);
+        }
+
+        // Funciones para Modal de Solicitud
+        function openRequestModal() {
+            document.getElementById('requestModal').classList.add('active');
+            document.getElementById('requestSuccess').classList.remove('show');
+        }
+
+        function closeRequestModal() {
+            document.getElementById('requestModal').classList.remove('active');
+        }
+
+        function handleRequestForm(e) {
+            e.preventDefault();
+            document.getElementById('requestSuccess').classList.add('show');
+            setTimeout(() => {
+                closeRequestModal();
+            }, 2000);
+        }
+
+        // Funciones para Modal de Detalles
+        function openDetailsModal(vehicleName, vehiclePrice) {
+            document.getElementById('detailsModal').classList.add('active');
+            document.getElementById('detailsTitle').textContent = vehicleName;
+            document.getElementById('vehicleName').textContent = vehicleName;
+            document.getElementById('vehiclePrice').textContent = vehiclePrice;
+            document.getElementById('detailsSuccess').classList.remove('show');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+
+        function handleDetailsForm(e) {
+            e.preventDefault();
+            document.getElementById('detailsSuccess').classList.add('show');
+            setTimeout(() => {
+                closeDetailsModal();
+            }, 2000);
+        }
+
+        // Funciones auxiliares
+        function scrollToOffers() {
+            document.getElementById('cars-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function applyFilters() {
+            alert('Filtros aplicados');
+        }
+
+        function handleContactForm(e) {
+            e.preventDefault();
+            alert('¡Mensaje enviado! Te contactaremos pronto.');
+            e.target.reset();
+        }
+
+        // Cerrar modales al hacer click fuera
+        window.onclick = function(event) {
+            const quoteModal = document.getElementById('quoteModal');
+            const requestModal = document.getElementById('requestModal');
+            const detailsModal = document.getElementById('detailsModal');
+            
+            if (event.target === quoteModal) quoteModal.classList.remove('active');
+            if (event.target === requestModal) requestModal.classList.remove('active');
+            if (event.target === detailsModal) detailsModal.classList.remove('active');
+        }
+    </script>
 </body>
 </html>
-
-
-
