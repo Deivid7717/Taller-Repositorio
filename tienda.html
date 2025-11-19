@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tienda - Ejemplo</title>
+  <style>
+    :root{
+      --bg:#f2f6f9;
+      --card:#ffffff;
+      --accent:#1e90ff;
+      --accent-2:#ff7b5a;
+      --muted:#9aa6b2;
+      --soft:#f8f8f9;
+      --shadow: 0 6px 16px rgba(22,34,50,0.08);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:#111;}
+    .wrap{max-width:1200px;margin:28px auto;padding:20px;display:flex;gap:24px;}
+    /* LEFT NAV */
+    .left-nav{width:140px;background:var(--card);border-radius:8px;padding:18px;box-shadow:var(--shadow);flex:0 0 140px;}
+    .left-nav a{display:block;color:#333;padding:10px 6px;border-radius:6px;text-decoration:none;margin-bottom:6px;font-size:14px}
+    .left-nav a:hover{background:var(--soft)}
+    /* MAIN COLUMN */
+    .main{flex:1;display:flex;flex-direction:column;gap:14px;}
+    .hero{background:linear-gradient(180deg,#fff6ee,#fff);border-radius:10px;padding:22px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between}
+    .hero .text{max-width:480px}
+    .hero h2{margin:0 0 8px;font-size:22px}
+    .hero p{margin:0;color:var(--muted)}
+    .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
+    select, .btn{padding:8px 12px;border-radius:8px;border:1px solid #e6e9ed;background:white;font-size:14px}
+    .btn.primary{background:var(--accent);color:#fff;border:none;box-shadow:0 3px 0 rgba(0,0,0,0.06)}
+    .btn.ghost{background:transparent;border:1px solid #eee}
+    /* Product list */
+    .product-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:6px}
+    .card{background:var(--card);border-radius:10px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .12s}
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%;height:130px;object-fit:cover;border-radius:8px}
+    .meta{font-size:13px;color:var(--muted)}
+    .title{font-weight:700}
+    .price{color:var(--accent-2);font-weight:700;margin-top:6px}
+    .details-btn{background:var(--accent-2);color:white;padding:8px;border-radius:8px;border:none;width:100%;font-weight:600}
+    /* RIGHT SIDEBAR */
+    .right{width:340px;flex:0 0 340px}
+    .panel{background:var(--card);border-radius:10px;padding:14px;box-shadow:var(--shadow);margin-bottom:14px}
+    .panel h4{margin:0 0 8px}
+    .form input,.form textarea{width:100%;padding:10px;margin-bottom:8px;border-radius:6px;border:1px solid #eef2f5}
+    .form button{width:100%;padding:10px;border-radius:8px;background:var(--accent);color:#fff;border:none}
+    .list-small{list-style:none;padding:0;margin:0}
+    .list-small li{padding:10px 0;border-bottom:1px solid #f1f4f7;color:var(--muted);font-size:14px}
+    /* modal */
+    .modal{position:fixed;inset:0;background:rgba(6,12,20,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}
+    .modal.show{display:flex}
+    .modal .box{background:white;border-radius:10px;padding:18px;max-width:720px;width:100%;box-shadow:var(--shadow)}
+    .modal .close{float:right;border:none;background:none;font-size:18px}
+    @media(max-width:1000px){ .wrap{padding:12px} .right{display:none} .left-nav{display:none} }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <nav class="left-nav" aria-label="Navegación">
+      <a href="main.html">Inicio</a>
+      <a href="index1.html">Coches / Furgonetas</a>
+      <a href="customers.html">Clientes</a>
+      <a href="stuff.html">Fun stuff</a>
+      <a href="tienda.html" class="active">Tienda</a>
+       <a href="index.html">ver pagina web</a>
+    </nav>
+
+    <section class="main" aria-label="Listado de productos">
+      <div class="hero" role="region" aria-label="Ofertas destacadas">
+        <div class="text">
+          <h2>Nuestras mejores ofertas de leasing</h2>
+          <p>Promociones limitadas. Financiación flexible y entrega rápida.</p>
+          <div class="controls">
+            <select id="typeFilter" aria-label="Filtrar por tipo">
+              <option value="all">Todos los tipos</option>
+              <option value="sedan">Sedán</option>
+              <option value="hatch">Hatchback</option>
+              <option value="van">Furgoneta</option>
+            </select>
+            <select id="priceFilter" aria-label="Filtrar por precio">
+              <option value="all">Todos los precios</option>
+              <option value="0-200">Hasta £200</option>
+              <option value="200-400">£200 - £400</option>
+              <option value="400+">£400+</option>
+            </select>
+            <button class="btn primary" id="applyFilters">Aplicar</button>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <button class="btn ghost" onclick="window.location='#'">Ver ofertas</button>
+        </div>
+      </div>
+
+      <div class="product-list" id="productList" aria-live="polite">
+        <!-- Productos generados dinámicamente -->
+      </div>
+    </section>
+
+    <aside class="right" aria-label="Panel derecho">
+      <div class="panel">
+        <h4>Contacta con nosotros</h4>
+        <form class="form" onsubmit="event.preventDefault();alert('Enviado (demo)');">
+          <input type="text" placeholder="Tu nombre" required>
+          <input type="email" placeholder="Correo electrónico" required>
+          <textarea rows="3" placeholder="¿Qué necesitas?"></textarea>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h4>Respuesta en línea</h4>
+        <p style="color:var(--muted)">Clientes en línea: <strong>12</strong></p>
+        <button class="btn primary" style="width:100%;margin-top:8px">Solicitar ahora</button>
+      </div>
+
+      <div class="panel">
+        <h4>Últimas entregas</h4>
+        <ul class="list-small">
+          <li>Kia Ceed - Horsham</li>
+          <li>Renault Megane - Brighton</li>
+          <li>Nissan Juke - Easingwold</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Modal de detalle -->
+  <div class="modal" id="modal">
+    <div class="box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="close" onclick="closeModal()">✕</button>
+      <h3 id="modalTitle">Detalle del producto</h3>
+      <div id="modalContent" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <!-- Rellenado por JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Datos de ejemplo (sustituir por datos reales)
+    const products = [
+      { id:1, title:'Seat Ibiza', type:'hatch', price:180, meta:'1.0 TSI Sport | 5dr | Manual', img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1000&auto=format&fit=crop'},
+      { id:2, title:'Renault Megane', type:'sedan', price:220, meta:'1.3 TCe | 5dr | Auto', img:'https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1000&auto=format&fit=crop'},
+      { id:3, title:'Nissan NV200', type:'van', price:320, meta:'Furgoneta 5plz | Diesel', img:'imagenes index1/nv200.webp'},
+      { id:4, title:'Ford Fiesta', type:'hatch', price:150, meta:'1.0 EcoBoost | 5dr', img:'imagenes index1/fiesta.webp'},
+      { id:5, title:'Volkswagen Golf', type:'hatch', price:260, meta:'1.4 TSI | 5dr', img:'imagenes index1/golf.webp'},
+      { id:6, title:'Mercedes Vito', type:'van', price:450, meta:'Furgoneta lujo | Diesel', img:'imagenes index1/vito.webp'},
+    ];
+
+    const productList = document.getElementById('productList');
+
+    function renderList(list){
+      productList.innerHTML = '';
+      list.forEach(p=>{
+        const el = document.createElement('article');
+        el.className = 'card';
+        el.tabIndex = 0;
+        el.innerHTML = `
+          <img src="${p.img}" alt="${p.title}">
+          <div class="meta">${p.meta}</div>
+          <div class="title">${p.title}</div>
+          <div class="price">Desde £${p.price}/mes</div>
+          <button class="details-btn" data-id="${p.id}">Detalles</button>
+        `;
+        // click para abrir detalle
+        el.querySelector('.details-btn').addEventListener('click', ()=> openModal(p));
+        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') openModal(p) });
+        productList.appendChild(el);
+      });
+    }
+
+    function openModal(product){
+      const modal = document.getElementById('modal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div>
+          <img src="${product.img}" alt="${product.title}" style="width:100%;border-radius:8px;max-height:320px;object-fit:cover">
+        </div>
+        <div>
+          <h4 style="margin:0">${product.title}</h4>
+          <p style="color:var(--muted)">${product.meta}</p>
+          <p style="font-weight:700;color:var(--accent-2)">£${product.price}/mes</p>
+          <p style="margin-top:8px;color:#333">Descripción demo: coche en excelente estado, entrega inmediata y financiación disponible.</p>
+          <div style="margin-top:14px;display:flex;gap:8px">
+            <button class="btn primary" onclick="alert('Solicitud enviada (demo)')">Solicitar</button>
+            <a href="#" style="align-self:center;color:var(--muted)">Ver ficha completa</a>
+          </div>
+        </div>
+      `;
+      modal.classList.add('show');
+    }
+    function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
+    // Filtros
+    document.getElementById('applyFilters').addEventListener('click', ()=>{
+      const t = document.getElementById('typeFilter').value;
+      const p = document.getElementById('priceFilter').value;
+      let filtered = products.slice();
+      if(t!=='all') filtered = filtered.filter(x=>x.type===t);
+      if(p!=='all'){
+        if(p==='0-200') filtered = filtered.filter(x=>x.price<=200);
+        if(p==='200-400') filtered = filtered.filter(x=>x.price>200 && x.price<=400);
+        if(p==='400+') filtered = filtered.filter(x=>x.price>400);
+      }
+      renderList(filtered);
+    });
+
+    // inicial
+    renderList(products);
+
+    // cerrar modal con ESC y click fuera
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+    document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') closeModal(); });
+  </script>
+</body>
+</html>

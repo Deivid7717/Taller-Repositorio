@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fun stuff · Leasing</title>
+  <link rel="stylesheet" href="estilos index1/estilos.css">
+</head>
+<body>
+  <div class="site-wrapper">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo">
+          <a href="index1.html"><img src="imagenes index1/Logo-da-Renault-Carros-Fotos-Reproducao-Canva.jpg" alt="Logo" style="height:44px"></a>
+        </div>
+
+        <form class="search-form" role="search" aria-label="Buscar" onsubmit="return false;">
+          <input type="search" placeholder="Buscar..." />
+          <button class="btn-sm" type="submit">Buscar</button>
+        </form>
+
+        <div class="top-cta">
+          <a class="btn-primary" href="index1.html">Ir a ofertas</a>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul>
+          <li><a href="index1.html">Inicio</a></li>
+          <li><a href="index1.html#cars">Coches</a></li>
+          <li><a href="customers.html">Clientes</a></li>
+          <li><a class="active" href="stuff.html">Fun stuff</a></li>
+          <li><a href="tienda.html">Tienda</a></li>
+          <a href="index.html">ver pagina web</a>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="fun-hero" role="region" aria-label="Fun stuff hero">
+        <div>
+          <h1>Sección "Fun stuff"</h1>
+          <p class="lead small-muted">Experimentos, utilidades y pequeñas demos para la web — prueba cosas rápidas.</p>
+          <div style="margin-top:10px">
+            <button class="btn-ghost" id="randomFactBtn">Mostrar dato aleatorio</button>
+            <button class="btn-ghost" id="toggleThemeBtn" style="margin-left:8px">Alternar tema</button>
+          </div>
+        </div>
+        <img src="imagenes index1/Copilot_20251116_103743.png" alt="Fun" style="height:110px;object-fit:contain;opacity:.95">
+      </section>
+
+      <section class="grid-fun" aria-label="Herramientas">
+        <div class="card-fun">
+          <h3>Dato aleatorio</h3>
+          <p id="randomFact" class="small-muted">Pulsa "Mostrar dato aleatorio" para ver uno.</p>
+        </div>
+
+        <div class="card-fun">
+          <h3>Mini galería</h3>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">
+            <img src="imagenes index1/1.png" alt="" style="width:100%;height:54px;object-fit:contain;background:#fff;padding:6px;border-radius:6px">
+            <img src="imagenes index1/2.png" alt="" style="width:100%;height:54px;object-fit:contain;background:#fff;padding:6px;border-radius:6px">
+            <img src="imagenes index1/3.png" alt="" style="width:100%;height:54px;object-fit:contain;background:#fff;padding:6px;border-radius:6px">
+          </div>
+        </div>
+
+        <div class="card-fun">
+          <h3>Convertidor rápido</h3>
+          <label class="small-muted">£/mes → €/mes</label>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="gbpInput" type="number" value="250" style="padding:8px;border-radius:8px;border:1px solid #eee;width:120px">
+            <button class="btn-sm" id="convertBtn">Convertir</button>
+          </div>
+          <p id="convertResult" class="small-muted" style="margin-top:8px">Resultado aparecerá aquí.</p>
+        </div>
+      </section>
+
+      <section style="margin-top:18px" class="card-fun" aria-label="Notas">
+        <h3>Notas</h3>
+        <p class="small-muted">Este espacio es para pruebas y demos. Sustituye o amplía los bloques según necesites.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      © 2025 · empresa cars · <a href="index1.html">Volver</a>
+    </footer>
+  </div>
+
+  <script>
+    const facts = [
+      "El primer coche de producción fue el Benz Patent-Motorwagen (1886).",
+      "El 50% de los coches vendidos en algunos mercados ya son híbridos/eléctricos en 2035 (ejemplo hipotético).",
+      "Muchos concesionarios ofrecen mantenimiento incluido en contratos de leasing.",
+      "Cambiar filtros y aceite regularmente aumenta la vida útil del motor."
+    ];
+
+    document.getElementById('randomFactBtn').addEventListener('click', ()=>{
+      const i = Math.floor(Math.random()*facts.length);
+      document.getElementById('randomFact').textContent = facts[i];
+    });
+
+    // Convertidor simple GBP -> EUR (ejemplo, tasa fija)
+    document.getElementById('convertBtn').addEventListener('click', ()=>{
+      const gbp = parseFloat(document.getElementById('gbpInput').value) || 0;
+      const rate = 1.15; // ejemplo: 1 GBP = 1.15 EUR
+      const eur = (gbp * rate).toFixed(2);
+      document.getElementById('convertResult').textContent = `£${gbp} ≈ €${eur} (tasa demo ${rate})`;
+    });
+
+    // Alternar tema básico (cambia variables CSS)
+    document.getElementById('toggleThemeBtn').addEventListener('click', ()=>{
+      const r = document.documentElement;
+      const current = getComputedStyle(r).getPropertyValue('--bg') || '';
+      if(current.includes('#f6fbff') || current.includes('#f2f6f9') ){
+        r.style.setProperty('--page-bg', '#0b1220');
+        r.style.setProperty('--card-bg', '#071826');
+        r.style.setProperty('--accent', '#60a5fa');
+        document.body.style.color = '#e6eefc';
+      } else {
+        r.style.removeProperty('--page-bg');
+        r.style.removeProperty('--card-bg');
+        r.style.removeProperty('--accent');
+        document.body.style.color = '';
+      }
+    });
+  </script>
+</body>
+</html>
